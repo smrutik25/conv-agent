@@ -1,0 +1,100 @@
+[
+  {
+    "question_id": 1,
+    "topic_id": 1,
+    "topic": "Algebra",
+    "correct": "c",
+    "hint": "Hint: Isolate the variable x by moving the constant term to the other side of the equation.",
+    "explanation": "Explanation: To solve 2x - 5 = 7, add 5 to both sides, yielding 2x = 12. Divide both sides by 2 to find x = 6. Therefore, the correct answer is c) 6.",
+    "options": "['a) 2', 'b) 4', 'c) 6', 'd) 8', 'e) 10']",
+    "question": "Solve the equation: 2x - 5 = 7."
+  },
+  {
+    "question_id": 2,
+    "topic_id": 1,
+    "topic": "Algebra",
+    "correct": "b",
+    "hint": "Hint: Distribute the coefficient outside the parentheses to both terms inside.",
+    "explanation": "Explanation: Simplifying 3(2x - 5) + x = 20 gives 6x - 15 + 2x = 20. Combine like terms to get 8x - 15 = 20. Solve for x to find x = 4.375. Therefore, the correct answer is b) 4.375.",
+    "options": "['a) 2.5', 'b) 4.375', 'c) 5', 'd) 6', 'e) 7.5']",
+    "question": "Simplify: 3(2x - 5) + x = 20."
+  },
+  {
+    "question_id": 3,
+    "topic_id": 1,
+    "topic": "Algebra",
+    "correct": "d",
+    "hint": "Hint: Factor the expression by grouping similar terms.",
+    "explanation": "Explanation: Factoring x^2 + 2x - 4 - 8 by grouping gives (x^2 + 2x) - (4 + 8). Further factor the common factor of x + 2 to get (x - 2)(x + 2). Therefore, the correct answer is d) x - 2.",
+    "options": "['a) x + 2', 'b) x - 2', 'c) x^2 + 2', 'd) x - 2', 'e) x^2 - 2']",
+    "question": "Factor: x^2 + 2x - 4 - 8."
+  },
+  {
+    "question_id": 4,
+    "topic_id": 1,
+    "topic": "Algebra",
+    "correct": "a",
+    "hint": "Hint: Combine like terms and isolate the variable.",
+    "explanation": "Explanation: Solving 2(3x - 1) = 22 - x involves distributing and simplifying to get 6x - 2 = 22 - x. Combine like terms to obtain 7x = 24. Divide by 3 to find x = 4. Therefore, the correct answer is a) 4.",
+    "options": "['a) 4', 'b) 5', 'c) 6', 'd) 7', 'e) 8']",
+    "question": "Solve for x: 2(3x - 1) = 22 - x."
+  },
+  {
+    "question_id": 5,
+    "topic_id": 1,
+    "topic": "Algebra",
+    "correct": "e",
+    "hint": "Hint: Factor the quadratic expression.",
+    "explanation": "Explanation: Factoring x^2 - 5x + 6 gives (x - 2)(x - 3). Set each factor to zero to find solutions x = 2 and x = 3. Therefore, the correct answer is e) 2 and 3.",
+    "options": "['a) 1', 'b) 2', 'c) 4', 'd) 5', 'e) 2 and 3']",
+    "question": "Factorize: x^2 - 5x + 6 = 0."
+  },
+  {
+    "question_id": 6,
+    "topic_id": 1,
+    "topic": "Algebra",
+    "correct": "c",
+    "hint": "Hint: Use the quadratic formula to solve for x.",
+    "explanation": "Explanation: The quadratic formula x = (-b ± √(b^2 - 4ac)) / 2a can be applied to solve the quadratic equation 2x^2 - 5x - 3 = 0. Solve to find x = 3 and x = -1/2. Therefore, the correct answer is c) 3 and -1/2.",
+    "options": "['a) 1 and 2', 'b) -1 and 3', 'c) 3 and -1/2', 'd) 1/2 and 2', 'e) -2 and 1']",
+    "question": "Solve the quadratic equation: 2x^2 - 5x - 3 = 0."
+  },
+  {
+    "question_id": 7,
+    "topic_id": 1,
+    "topic": "Algebra",
+    "correct": "b",
+    "hint": "Hint: Identify the vertex form of the quadratic equation.",
+    "explanation": "Explanation: The given quadratic equation y = 2x^2 - 8x + 6 can be written in vertex form as y = 2(x - 2)^2 + 2. The vertex form is (h, k), where (2, 2) is the vertex. Therefore, the correct answer is b) (2, 2).",
+    "options": "['a) (1, 1)', 'b) (2, 2)', 'c) (-2, 6)', 'd) (4, -2)', 'e) (0, 4)']",
+    "question": "Identify the vertex of the quadratic equation y = 2x^2 - 8x + 6."
+  }, {
+    "question_id": 8,
+    "topic_id": 1,
+    "topic": "Algebra",
+    "correct": "c",
+    "hint": "Hint: Apply the distributive property to simplify the expression.",
+    "explanation": "Explanation: Distribute the -2 to both terms inside the parentheses, resulting in -2x + 10. Combine like terms to get -x + 5. Therefore, the correct answer is c) -x + 5.",
+    "options": "['a) -2x - 5', 'b) -2x + 5', 'c) -x + 5', 'd) x - 5', 'e) x + 5']",
+    "question": "Simplify: -2(x - 2) + 15."
+  },
+  {
+    "question_id": 9,
+    "topic_id": 1,
+    "topic": "Algebra",
+    "correct": "a",
+    "hint": "Hint: Use the quadratic formula to find the solutions for x.",
+    "explanation": "Explanation: Apply the quadratic formula to solve the equation 3x^2 - 5x + 2 = 0. The solutions are x = 1/3 and x = 2. Therefore, the correct answer is a) 1/3 and 2.",
+    "options": "['a) 1/3 and 2', 'b) -1 and 3', 'c) 3 and -1/2', 'd) 1/2 and 2', 'e) -2 and 1']",
+    "question": "Solve the quadratic equation: 3x^2 - 5x + 2 = 0."
+  },
+  {
+    "question_id": 10,
+    "topic_id": 1,
+    "topic": "Algebra",
+    "correct": "d",
+    "hint": "Hint: Factor the quadratic expression.",
+    "explanation": "Explanation: Factor the quadratic expression x^2 - 5x + 6. The factored form is (x - 2)(x - 3). Therefore, the correct answer is d) (x - 2)(x - 3).",
+    "options": "['a) x + 2', 'b) x - 2', 'c) x^2 + 2', 'd) (x - 2)(x - 3)', 'e) x^2 - 2']",
+    "question": "Factorize: x^2 - 5x + 6."
+  }]
