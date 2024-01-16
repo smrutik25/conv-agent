@@ -25,6 +25,7 @@
     },
     "UNCLEAR_DIALOGUE":["I'm sorry, I didn't catch that.", "Can you please repeat?", "Pardon me? Could you come again?"],
     "NO_DIALOGUE":"Are you still there? Do you want to stop?",
+    "GENERAL_TO_QUIZ_DIALOGUE":"So, do you want to get back to the questions?",
     "SESSION_END_DIALOGUE":"You have reached the end of the session. You got {{CORRECT}} questions right and {{INCORRECT}} wrong. {{PERFORMANCE_SPECIFIC}}. Thanks and have a nice day! Goodbye",
     "PERFORMANCE_SPECIFIC_DIALOGUE":{
         "1":"You can do better, keep practising!",
