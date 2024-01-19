@@ -11,7 +11,7 @@ def generate_qb_topic(topic="BODMAS"):
 
     no_of_questions = read_json("TOTAL_QUESTIONS")
     for question in question_bank:
-        if question["topic"].lower() == topic:
+        if question["topic"].lower() == topic.lower():
             question["options"] = ast.literal_eval(question["options"])
             topical_qb.append(question)
 

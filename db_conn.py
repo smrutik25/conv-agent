@@ -6,7 +6,7 @@ logger.setLevel(logging.DEBUG)
 
 class DBConn():
     def __init__(self) -> None:
-        self.db_conn = sqlite3.connect("sql_database/users.db")
+        self.db_conn = sqlite3.connect("D:/MSCS/Q2/CA/CA_emotion_facial_recognition_new/sql_database/users.db")
         self.cur = self.db_conn.cursor()
     
     def db_create_and_insert_dummy(self):    
@@ -30,19 +30,27 @@ class DBConn():
         logger.info("Fetched user: ",str(res))
         return res, new_user
 
-    
     def update_name(self, user_id, name):
         self.cur.execute(f"UPDATE users SET name = '{name}' WHERE userid = {user_id};")
         self.db_conn.commit()
         logger.info("Updated name")
         return 
 
-    
     def fetch_emotion(self, user_id):
         res = self.cur.execute(f"SELECT emotion FROM users WHERE userid = {user_id}").fetchall()[0]
         logger.info("Fetched user emotion: ",str(res))
         return res[0]
     
+    def exit_user(self, user_id):
+        if user_id:
+            self.cur.execute(f"UPDATE users SET current_user = 1 WHERE userid = {user_id};")
+            self.db_conn.commit()
+            return
+
+    def fetch_all(self):
+        res = self.cur.execute(f"SELECT * FROM users").fetchall()
+        return(res)
+
     def close_connection(self):
         self.db_conn.commit()
         self.db_conn.close()        
@@ -51,11 +59,13 @@ class DBConn():
 if __name__ == '__main__':
     conn = DBConn()
     # conn.db_create_and_insert_dummy()
-    res, new_user = conn.fetch_current_user()
+    # res, new_user = conn.fetch_current_user()
+    res = conn.fetch_all()
     print(res)
-    print(new_user)
-    conn.fetch_emotion(1)
-    # conn.update_name(1,"PLACEHOLDER")
+    # print(new_user)
+    # conn.fetch_emotion(1)
+    # conn.exit_user(3)
+    # conn.update_name(1,"Bob")
     # res, new_user = conn.fetch_current_user()
     # print(res)
     # print(new_user)

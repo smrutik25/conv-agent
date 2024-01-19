@@ -17,13 +17,12 @@ class FurhatConnection:
         self.furhat.set_face(mask="adult", character="Alex")
         self.unclear = read_json("UNCLEAR_DIALOGUE")
         self.no_dialog = read_json("NO_DIALOGUE")
-        self.end_dialog = read_json("SESSION_END_DIALOGUE")
+        self.end_dialog = read_json("SESSION_END_NO_SCORE")
         self.prompts = read_json("PROMPTS")
         self.gestures = read_json("FURHAT_GESTURES")  
         self.prompter = PromptGenerator(llm)
 
-
-    def furhat_listen(self, timeout=5, to_check = True):
+    def furhat_listen(self, timeout=15, to_check = True):
         result = Status()
         start_time = time.time()
         while not result.message and time.time() - start_time < timeout:
@@ -38,13 +37,12 @@ class FurhatConnection:
         else:
             return result
 
-
     def check_response(self, result=Status()):
         if not result.success or not result.message:
             user_dialogue = self.ask_again("no_dialog")
         else:
-            is_coherent = self.prompter.prompt_generator_dialogue(result.message, "COHERENT_DIALOGUE")
-            print(is_coherent)
+            # is_coherent = self.prompter.prompt_generator_dialogue(result.message, "COHERENT_DIALOGUE")
+            # print(is_coherent)
             is_coherent = 'yes'
             if is_coherent == 'yes':
                 return True, result.message
@@ -54,9 +52,9 @@ class FurhatConnection:
         if not user_dialogue.success or not user_dialogue.message:
             return False, ""
         else:
-            is_coherent = self.prompter.prompt_generator_dialogue(result.message, "COHERENT_DIALOGUE")
-            print(is_coherent)
-            is_coherent = 'yes' #temporary since llm is giving no always
+            # is_coherent = self.prompter.prompt_generator_dialogue(result.message, "COHERENT_DIALOGUE")
+            # print(is_coherent)
+            is_coherent = 'yes'
             if is_coherent == 'yes':
                 return True, user_dialogue.message
             else:
@@ -70,16 +68,18 @@ class FurhatConnection:
                 self.furhat_end_session()
         elif type == 'unclear_dialog':
             self.furhat_speak(random.choice(self.unclear))
-            user_dialogue = self.furhat_listen(timeout=20, to_check=False)
+            user_dialogue = self.furhat_listen(timeout=15, to_check=False)
         return user_dialogue
-        
-    
-    def furhat_speak(self, speech):
-        self.furhat.say(text=speech, blocking=True)
+
+    def furhat_speak(self, speech, block_flag = True):
+        self.furhat.say(text=speech, blocking=block_flag)
 
     def furhat_gesture(self, gesture):
-        gesture_name = self.gestures[gesture]
-        self.furhat.gesture(name=gesture_name)
+        if gesture in self.gestures:
+            gesture_name = self.gestures[gesture]
+            self.furhat.gesture(name=gesture_name)
+        else:
+            self.furhat.gesture(name=self.gestures["default"])
     
     def furhat_end_session(self):
         self.furhat.say(text=self.end_dialog, blocking=True)

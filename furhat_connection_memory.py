@@ -1,44 +1,112 @@
 from furhat_remote_api import FurhatRemoteAPI
-from threading import Thread, Event
 import time
-stop_event = Event()
-
-#TODO: Add log to json file which will call the short term (furhat speak BOT:, furhat listen USER: and send it to STM)
-# for bot dialogue, keep adding to bot, once user dialogue comes and is coherent, send it to STM. Delete file from local everytime to avoid duplicate
-class FurhatConnection:
-    def __init__(self):
-        self.furhat = FurhatRemoteAPI("localhost")
-        self.furhat.set_voice(name='Matthew')
-        self.furhat.set_face(mask="adult", character="Alex")
-        self.dialogue = {"BOT":"","USER":""}
-
-    
-    def furhat_hear(self):
-        result = Status()
-        # TODO: add timeout
-        while not result.message:
-            result = self.furhat.listen()
-            if stop_event.is_set():
-                break
-
-        # TODO: should ask LLM is sentence is coherent (with context?) else ask again??
-        return result
-    
-    def furhat_listen(self, time_out = 5, context = None):
-         listen_thread = Thread(target=self.furhat_hear)
-         listen_thread.join(timeout=time_out)
-         stop_event.set()
-
-    def furhat_speak(self, speech):
-        self.furhat.say(text=speech)
-
+import random
+from read_json_config import read_json
+from generate_prompt import PromptGenerator
+from query_llm import AskLLM
 
 class Status:
     def __init__(self):
         self.message = ''
         self.success = ''
 
+class FurhatConnection:
+    def __init__(self, llm):
+        self.furhat = FurhatRemoteAPI("localhost")
+        self.furhat.set_voice(name='Matthew')
+        self.furhat.set_face(mask="adult", character="Alex")
+        self.unclear = read_json("UNCLEAR_DIALOGUE")
+        self.no_dialog = read_json("NO_DIALOGUE")
+        self.end_dialog = read_json("SESSION_END_DIALOGUE")
+        self.prompts = read_json("PROMPTS")
+        self.gestures = read_json("FURHAT_GESTURES")  
+        self.prompter = PromptGenerator(llm)
+        self.dialogue = {}
+
+    def furhat_listen(self, timeout=15, to_check = True):
+        result = Status()
+        start_time = time.time()
+        while not result.message and time.time() - start_time < timeout:
+            result = self.furhat.listen()
+        print(result)
+        if to_check:
+            is_dialogue, dialogue = self.check_response(result)
+            if is_dialogue:
+                self.dialogue["USER"] = dialogue
+                print("STM Dialogue: ", self.dialogue)
+                self.send_to_stm()
+                self.dialogue = {}
+                return dialogue
+            else:
+                return
+        else:
+            self.dialogue["USER"] = result.message
+            return result
+
+
+    def check_response(self, result=Status()):
+        if not result.success or not result.message:
+            user_dialogue = self.ask_again("no_dialog")
+        else:
+            is_coherent = self.prompter.prompt_generator_dialogue(result.message, "COHERENT_DIALOGUE")
+            print(is_coherent)
+            is_coherent = 'yes'
+            if is_coherent == 'yes':
+                return True, result.message
+            else:
+                user_dialogue = self.ask_again("unclear_dialog")
+        
+        if not user_dialogue.success or not user_dialogue.message:
+            return False, ""
+        else:
+            is_coherent = self.prompter.prompt_generator_dialogue(result.message, "COHERENT_DIALOGUE")
+            print(is_coherent)
+            is_coherent = 'yes' #temporary since llm is giving no always
+            if is_coherent == 'yes':
+                return True, user_dialogue.message
+            else:
+                return False, ""
+
+    def ask_again(self, type):
+        if type == 'no_dialog':
+            self.furhat_speak(self.no_dialog)
+            user_dialogue = self.furhat_listen(timeout=30, to_check=False)
+            if not user_dialogue.message:
+                self.furhat_end_session()
+        elif type == 'unclear_dialog':
+            self.furhat_speak(random.choice(self.unclear))
+            user_dialogue = self.furhat_listen(timeout=15, to_check=False)
+        return user_dialogue
+        
+    
+    def furhat_speak(self, speech, context = "study", block_flag = True):
+        self.dialogue["context"] = context
+        if not "BOT" in self.dialogue:
+            self.dialogue["BOT"] = speech
+        else:
+            self.dialogue["BOT"] = self.dialogue["BOT"] + ". " + speech
+        self.furhat.say(text=speech, blocking=block_flag)
+
+
+
+    def furhat_gesture(self, gesture):
+        if gesture in self.gestures:
+            gesture_name = self.gestures[gesture]
+            self.furhat.gesture(name=gesture_name)
+        else:
+            self.furhat.gesture(name=self.gestures["default"])
+    
+    def send_to_stm(self):
+        pass
+
+    def furhat_end_session(self):
+        self.furhat.say(text=self.end_dialog, blocking=True)
+
+
 if __name__ == "__main__":
-    furhat = FurhatConnection()
+    furhat = FurhatConnection(AskLLM())
     furhat.furhat_speak("Hi there. How are you doing today?")
-    furhat.furhat_listen()
+    dialogue = furhat.furhat_listen(timeout=10)
+    # dialogue = furhat.furhat_listen_new()
+    print(dialogue)
+    #TODO : If want to stop, stop
